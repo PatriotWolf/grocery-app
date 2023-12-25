@@ -1,4 +1,4 @@
-import { DataTypes, ModelDefined, UUIDV4 } from 'sequelize';
+import { DataTypes, ModelDefined } from 'sequelize';
 import SequelizeConnector from '../configs/db.config';
 
 interface TutorialAttributes {
@@ -14,8 +14,8 @@ const Tutorial: ModelDefined<TutorialAttributes, TutorialCreationAttributes> =
     'tutorial',
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
       },
       title: {
