@@ -1,0 +1,25 @@
+GET http://localhost:3333/tutorials?query=using HTTP/1.1
+
+###
+
+POST http://localhost:3333/tutorials/create HTTP/1.1
+content-type: application/json
+
+{
+    "title": "How to use Query",
+    "description": "My first time query"
+}
+
+###
+
+PUT http://localhost:3333/tutorials/2 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "How to use Query",
+    "description": "My first time query"
+}
+
+###
+
+DELETE http://localhost:3333/tutorials/2 HTTP/1.1

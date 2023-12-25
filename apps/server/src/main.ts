@@ -3,21 +3,42 @@
  * This is only a minimal backend to get started.
  */
 
-import express from 'express';
+import express, { Express } from 'express';
 import * as path from 'path';
+import db from './configs/db.config';
+import MainRoute from './routes';
+import TutorialModel from './models/tutorial.model';
 
-const app = express();
+const app: Express = express();
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+const initApp = async () => {
+  console.log('Testing the database connection..');
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to server!' });
-});
+  // Test the connection.
+  try {
+    await db.authenticate();
+    console.log('Connection has been established successfully.');
 
-const port = process.env.PORT || 3333;
+    TutorialModel.sync({ alter: true });
 
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
+    /**
+     * Start the web server on the specified port.
+     */
+    app.use(express.json());
+    app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-server.on('error', console.error);
+    MainRoute(app);
+
+    const port = process.env.PORT || 3333;
+    app.listen(port, () => {
+      console.log(`Server is running at: http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database:', error.original);
+  }
+};
+
+/**
+ * Initialize the application.
+ */
+initApp();
