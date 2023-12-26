@@ -1,39 +1,36 @@
-import { DataTypes, ModelDefined } from 'sequelize';
-import SequelizeConnector from '../configs/db.config';
+import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
-interface TutorialAttributes {
-  id: number;
-  title: string;
-  description: string;
-  published: boolean;
+@Table({
+  tableName: 'tutorials',
+  modelName: 'Tutorial',
+  timestamps: true,
+})
+class Tutorial extends Model<Tutorial> {
+  @Column({
+    type: DataType.UUID,
+    primaryKey: true,
+    defaultValue: DataType.UUIDV4,
+  })
+  declare id: string;
+
+  @Column({
+    type: DataType.STRING,
+    unique: true,
+    allowNull: false,
+  })
+  declare title: string;
+
+  @Column({
+    type: DataType.STRING,
+    defaultValue: '',
+  })
+  declare description: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare published: boolean;
 }
-interface TutorialCreationAttributes extends Omit<TutorialAttributes, 'id'> {}
-
-const Tutorial: ModelDefined<TutorialAttributes, TutorialCreationAttributes> =
-  SequelizeConnector.define(
-    'tutorial',
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      title: {
-        type: DataTypes.STRING,
-        unique: true,
-      },
-      description: {
-        type: DataTypes.STRING,
-      },
-      published: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-    },
-    {
-      // For the sake of clarity we specify our indexes
-      indexes: [{ unique: true, fields: ['id'] }],
-    },
-  );
 
 export default Tutorial;

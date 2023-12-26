@@ -10,7 +10,7 @@ const router = Router();
 
 router.get('/', getAllTutorials);
 router.post('/create', createTutorial);
-router.put('/:id', editTutorials);
-router.delete('/:id', deleteTutorials);
+router.put('/', editTutorials);
+router.delete('/', deleteTutorials);
 
 export default router;

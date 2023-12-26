@@ -1,4 +1,4 @@
-GET http://localhost:3333/tutorials?query=using HTTP/1.1
+GET http://localhost:3333/tutorials/ HTTP/1.1
 
 ###
 
@@ -6,20 +6,25 @@ POST http://localhost:3333/tutorials/create HTTP/1.1
 content-type: application/json
 
 {
-    "title": "How to use Query",
-    "description": "My first time query"
+    "title": "How to use Sequelize",
+    "description": "My first time query "
 }
 
 ###
 
-PUT http://localhost:3333/tutorials/2 HTTP/1.1
+PUT http://localhost:3333/tutorials HTTP/1.1
 content-type: application/json
 
-{
-    "title": "How to use Query",
+{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22",
+    "title": "How to use ssssss",
     "description": "My first time query"
 }
 
 ###
 
-DELETE http://localhost:3333/tutorials/2 HTTP/1.1
+DELETE http://localhost:3333/tutorials HTTP/1.1
+content-type: application/json
+
+{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22"
+    
+}
