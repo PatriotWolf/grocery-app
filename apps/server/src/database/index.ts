@@ -1,5 +1,6 @@
 import { SequelizeOptions, Sequelize } from 'sequelize-typescript';
 import Tutorial from '../models/tutorial.model';
+import Product from '../models/product.model';
 
 const DB_CONFIG: SequelizeOptions = {
   host: process.env.DATABASE_HOST,
@@ -12,7 +13,7 @@ const DB_CONFIG: SequelizeOptions = {
   },
   port: parseInt(process.env.DATABASE_PORT, 10),
   ssl: true,
-  models: [Tutorial],
+  models: [Tutorial, Product],
   query: { raw: true },
 };
 
