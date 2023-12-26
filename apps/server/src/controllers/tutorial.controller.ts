@@ -1,31 +1,40 @@
 import { Op } from 'sequelize';
 import Tutorial from '../models/tutorial.model';
+import { NextFunction, Request, Response } from 'express';
 
 //Create
-export const createTutorial = (req, res) => {
+export const createTutorial = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const { title, description } = req.body;
-  Tutorial.create({
-    title,
-    description,
-  })
-    .then(result => {
-      return res.json({
-        message: 'Record created successfully!',
-        data: {
-          ...result,
-        },
-      });
-    })
-    .catch(errors => {
-      return res.json({
-        message: 'Unable to create a record!',
-        error: errors.message,
-      });
+  try {
+    const result = await Tutorial.create({
+      title,
+      description,
     });
-  Tutorial;
+    res.status(201).json({
+      message: 'Record created successfully!',
+      data: {
+        ...result.get({ plain: true }),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Unable to fetch records!',
+      error: error.message,
+    });
+    next(error);
+  }
 };
 
-export const getAllTutorials = (req, res) => {
+//Read
+export const getAllTutorials = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const query = req.query.query;
   const condition = query
     ? {
@@ -35,57 +44,82 @@ export const getAllTutorials = (req, res) => {
         ],
       }
     : null;
-  Tutorial.findAll({
-    attributes: ['title', 'description'],
-    where: condition,
-  })
-    .then(result => {
-      return res.json(result);
-    })
-    .catch(errors => {
-      return res.json({
-        message: 'Unable to fetch records!',
-        error: errors.message,
-      });
+  try {
+    const result = await Tutorial.findAll({
+      attributes: ['id', 'title', 'description'],
+      where: condition,
     });
+    res.status(201).json({
+      message: 'Record created successfully!',
+      data: {
+        ...result,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Unable to fetch records!',
+      error: error.message,
+    });
+    next(error);
+  }
 };
 
-export const editTutorials = (req, res) => {
-  const id = req.params.id;
-  Tutorial.update(
-    {
-      title: req.body.title,
-      description: req.body.description,
-    },
-    {
-      where: { id: id },
-    },
-  )
-    .then(result => {
-      return res.json(result);
-    })
-    .catch(errors => {
-      return res.json({
-        message: 'Unable to update the record!',
-        error: errors.message,
-      });
+//Update
+export const editTutorials = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { id, title, description } = req.body;
+  try {
+    const result = await Tutorial.update(
+      {
+        title,
+        description,
+      },
+      {
+        where: { id },
+        returning: true,
+      },
+    );
+    console.log(result);
+    res.status(200).json({
+      message: 'Record created successfully!',
+      data: { ...result[1][0] },
     });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Unable to fetch records!',
+      error: error.message,
+    });
+    next(error);
+  }
 };
 
-export const deleteTutorials = (req, res) => {
-  const id = req.params.id;
-  Tutorial.destroy({
-    where: {
-      id: id,
-    },
-  })
-    .then(result => {
-      return res.json(result);
-    })
-    .catch(errors => {
-      return res.json({
-        message: 'Unable to delete the record!',
-        error: errors.message,
-      });
+//Delete
+export const deleteTutorials = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { id } = req.body;
+  try {
+    const result = await Tutorial.destroy({
+      where: {
+        id: id,
+      },
     });
+    result
+      ? res.status(202).json({ message: 'Record deleted successfully!' })
+      : res.status(404).send({
+          message: 'Unable to fetch records!',
+          error: 'No record found!',
+        });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Unable to delete the record!',
+      error: error.message,
+    });
+    next(error);
+  }
 };

@@ -5,9 +5,8 @@
 
 import express, { Express } from 'express';
 import * as path from 'path';
-import db from './configs/db.config';
+import db from './database';
 import MainRoute from './routes';
-import TutorialModel from './models/tutorial.model';
 
 const app: Express = express();
 
@@ -16,10 +15,8 @@ const initApp = async () => {
 
   // Test the connection.
   try {
-    await db.authenticate();
+    await db.sync();
     console.log('Connection has been established successfully.');
-
-    TutorialModel.sync({ alter: true });
 
     /**
      * Start the web server on the specified port.

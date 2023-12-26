@@ -1,5 +1,5 @@
-import { Sequelize } from 'sequelize';
-import { SequelizeOptions } from 'sequelize-typescript';
+import { SequelizeOptions, Sequelize } from 'sequelize-typescript';
+import Tutorial from '../models/tutorial.model';
 
 const DB_CONFIG: SequelizeOptions = {
   host: process.env.DATABASE_HOST,
@@ -12,6 +12,8 @@ const DB_CONFIG: SequelizeOptions = {
   },
   port: parseInt(process.env.DATABASE_PORT, 10),
   ssl: true,
+  models: [Tutorial],
+  query: { raw: true },
 };
 
 const SequelizeConnector = new Sequelize(
