@@ -8,6 +8,15 @@ This is monorepo of Express with NextJS
 
 To start the development server run `yarn start`. server is set to `3333` if you not create env for `PORT`
 
+MAKE SURE TO CREATE `.env` FILE TO CONNECT WITH POSTGRES WITH CONFIG BELOW:
+```
+DATABASE_HOST= 
+DATABASE_PORT= 
+DATABASE_USERNAME= 
+DATABASE_PASSWORD= 
+DATABASE_NAME= 
+```
+
 # Fullstack Assessment
 
 In this assessment, you will be required to demonstrate your understanding on:
@@ -62,3 +71,7 @@ In this assessment, you will be required to demonstrate your understanding on:
 These are the sample mockup designs, feel free to improvise!
 <img width="650" alt="Screenshot 2021-09-09 at 2 20 50 PM" src="https://user-images.githubusercontent.com/15083795/132633896-d700a7ca-3eab-4882-adcb-22e6096d53ba.png">
 <img width="653" alt="Screenshot 2021-09-09 at 2 23 54 PM" src="https://user-images.githubusercontent.com/15083795/132633909-4efd3944-b122-459b-a3bc-1b3ebc61b74a.png">
+
+
+# Todo
+1. Refactor components (Product Cards)
