@@ -43,7 +43,7 @@ export const getAllProducts = async (
       ? req.query.sort
       : null;
   const order =
-    req.query.order === 'ASC' || req.query.order === 'ASC'
+    req.query.order === 'ASC' || req.query.order === 'DESC'
       ? req.query.order
       : null;
   const condition = query

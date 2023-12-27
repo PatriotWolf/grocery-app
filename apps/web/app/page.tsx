@@ -15,9 +15,16 @@ import {
   Paper,
   InputBase,
   Divider,
+  Select,
+  MenuItem,
+  InputLabel,
+  ToggleButtonGroup,
+  ToggleButton,
 } from '@mui/material';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 import { PageProvider, useAppStoreCtx } from './context';
 import useAppStore from './useAppStore';
+import { SortBy, SortOrder } from './constants';
 
 const PageContainer: NextPage = () => {
   const {
@@ -28,6 +35,9 @@ const PageContainer: NextPage = () => {
     handlePageChange,
     fetchProducts,
     updateQueryString,
+    onSearchClick,
+    handleSelectChange,
+    handleSortOrder,
   } = useAppStoreCtx();
 
   useEffect(() => {
@@ -36,7 +46,7 @@ const PageContainer: NextPage = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [filter.page]);
+  }, [filter.page, filter.sort, filter.order]);
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 12, pt: 4 }}>
       <Toolbar />
@@ -48,6 +58,7 @@ const PageContainer: NextPage = () => {
       >
         <InputBase
           sx={{ ml: 1, flex: 1 }}
+          value={filter.query}
           placeholder="Start Search Product"
           inputProps={{ 'aria-label': 'search google maps' }}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,11 +71,43 @@ const PageContainer: NextPage = () => {
           color="primary"
           sx={{ p: '10px' }}
           aria-label="directions"
-          onClick={() => fetchProducts()}
+          onClick={() => onSearchClick()}
         >
           Search
         </Button>
       </Paper>
+      <Box my={2} textAlign={'right'}>
+        <InputLabel id="select-label">Sort By</InputLabel>
+        <Select
+          labelId="select-label"
+          id="select-label"
+          value={filter.name}
+          label="Age"
+          onChange={handleSelectChange}
+          sx={{
+            width: 100,
+          }}
+        >
+          {Object.values(SortBy).map(val => (
+            <MenuItem value={val} key={'MenuItem' + val}>
+              {val.toLocaleUpperCase()}
+            </MenuItem>
+          ))}
+        </Select>
+        <ToggleButtonGroup
+          value={filter.order}
+          exclusive
+          onChange={handleSortOrder}
+          aria-label="text alignment"
+        >
+          <ToggleButton value={SortOrder.ASC} aria-label="left aligned">
+            <ArrowDropDown />
+          </ToggleButton>
+          <ToggleButton value={SortOrder.DESC} aria-label="left aligned">
+            <ArrowDropUp />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
       <Grid container spacing={4} mb={3}>
         {products.length > 0 &&
           products.map(product => {
@@ -77,8 +120,14 @@ const PageContainer: NextPage = () => {
                     title="green iguana"
                   />
                   <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div">
+                      Name: <br />
                       {product.name}
+                    </Typography>
+                    <Typography gutterBottom variant="body1" component="div">
+                      Brand:
+                      <br />
+                      {product.brand}
                     </Typography>
                   </CardContent>
                   <CardActions>

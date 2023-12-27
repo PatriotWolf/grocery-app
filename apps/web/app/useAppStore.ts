@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 import {
   APIRemote,
@@ -8,6 +9,7 @@ import {
   ProductFilter,
   ProductRemote,
 } from './types';
+import { SortBy, SortOrder } from './constants';
 /**
  *
  * WHY NO REDUX: the reason not using redux yet as this is such a small project and no cross module data happening yet.
@@ -16,7 +18,12 @@ import {
 const useAppStore = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [pageData, setPageData] = useState<PageDetail | undefined>(undefined);
-  const [filter, setFilter] = useState<ProductFilter>({ query: '', page: 1 });
+  const [filter, setFilter] = useState<ProductFilter>({
+    query: '',
+    sort: SortBy.NAME,
+    order: SortOrder.ASC,
+    page: 1,
+  });
   const onClearFilter = () => {
     setFilter({ page: 1 });
   };
@@ -33,6 +40,15 @@ const useAppStore = () => {
   const onSearchClick = async () => {
     setFilter(prev => ({ ...prev, page: 1 }));
     fetchProducts();
+  };
+  const handleSelectChange = async (event: SelectChangeEvent) => {
+    setFilter(prev => ({ ...prev, sort: event.target.value as SortBy }));
+  };
+  const handleSortOrder = (
+    _event: React.MouseEvent<HTMLElement>,
+    newAlignment: SortOrder | null,
+  ) => {
+    setFilter(prev => ({ ...prev, order: newAlignment || SortOrder.ASC }));
   };
 
   const fetchProducts = async () => {
@@ -66,6 +82,8 @@ const useAppStore = () => {
     handlePageChange,
     updateQueryString,
     onSearchClick,
+    handleSelectChange,
+    handleSortOrder,
   };
 };
 
