@@ -4,6 +4,8 @@
  */
 
 import express, { Express } from 'express';
+import cors from 'cors';
+
 import * as path from 'path';
 import db from './database';
 import MainRoute from './routes';
@@ -11,7 +13,7 @@ import Product from './models/product.model';
 import { seedDB } from './seed';
 
 const app: Express = express();
-
+app.use(cors());
 const initApp = async () => {
   console.log('Testing the database connection..');
 
