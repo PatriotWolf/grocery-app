@@ -86,7 +86,33 @@ export const getAllProducts = async (
     next(error);
   }
 };
+//Read One
+export const getProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { id } = req.params;
 
+  try {
+    const result = await Product.findByPk(id as string);
+    if (!result) {
+      throw new Error('Record not found.');
+    }
+    res.status(201).json({
+      message: 'Record fetch successfully!',
+      data: {
+        ...result,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Unable to fetch records!',
+      error: error.message,
+    });
+    next(error);
+  }
+};
 //Update
 export const editProducts = async (
   req: Request,
