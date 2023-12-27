@@ -17,6 +17,7 @@ export interface PageDetail {
 }
 
 export interface ProductFilter {
+  query?: string;
   page?: number;
   name?: string;
   sort?: SortBy;

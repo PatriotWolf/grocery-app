@@ -16,9 +16,23 @@ import {
 const useAppStore = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [pageData, setPageData] = useState<PageDetail | undefined>(undefined);
-  const [filter, setFilter] = useState<ProductFilter>({ page: 1 });
+  const [filter, setFilter] = useState<ProductFilter>({ query: '', page: 1 });
   const onClearFilter = () => {
     setFilter({ page: 1 });
+  };
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setFilter(prev => ({ ...prev, page: value }));
+  };
+  const updateQueryString = (value: string) => {
+    setFilter(prev => ({ ...prev, query: value }));
+  };
+
+  const onSearchClick = async () => {
+    setFilter(prev => ({ ...prev, page: 1 }));
+    fetchProducts();
   };
 
   const fetchProducts = async () => {
@@ -42,7 +56,17 @@ const useAppStore = () => {
   const initFetch = () => {
     fetchProducts();
   };
-  return { products, pageData, fetchProducts, onClearFilter, initFetch };
+  return {
+    products,
+    pageData,
+    filter,
+    fetchProducts,
+    onClearFilter,
+    initFetch,
+    handlePageChange,
+    updateQueryString,
+    onSearchClick,
+  };
 };
 
 export default useAppStore;
