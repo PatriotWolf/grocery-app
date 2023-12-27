@@ -6,7 +6,7 @@ import {
   PageDetail,
   Product,
   ProductFilter,
-  ProductRemote,
+  ProductsRemote,
 } from './types';
 import { SortBy, SortOrder } from './constants';
 /**
@@ -56,12 +56,12 @@ const useAppStore = () => {
   const fetchProducts = async () => {
     try {
       const url = 'http://localhost:3333/products';
-      const { data } = await axios.get<APIRemote<ProductRemote>>(url, {
+      const { data } = await axios.get<APIRemote<ProductsRemote>>(url, {
         params: {
           ...filter,
         },
       });
-      console.log(data);
+
       const { data: response } = data;
       const { products, ...rest } = response;
       setProducts(response.products);

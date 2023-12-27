@@ -1,4 +1,10 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+} from 'sequelize-typescript';
 
 @Table({
   tableName: 'products',
@@ -6,9 +12,9 @@ import { Table, Column, Model, DataType } from 'sequelize-typescript';
   timestamps: true,
 })
 class Product extends Model<Product> {
+  @PrimaryKey
   @Column({
     type: DataType.UUID,
-    primaryKey: true,
     defaultValue: DataType.UUIDV4,
   })
   declare id: string;
