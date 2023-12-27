@@ -29,9 +29,11 @@ class Product extends Model<Product> {
   @Column({
     type: DataType.BIGINT,
     allowNull: false,
-    defaultValue: DataType.BIGINT,
+    unique: true,
+    //this is temporary solution
+    defaultValue: Math.floor(Math.random() * 9000000000) + 100000000000,
   })
-  declare barcode: boolean;
+  declare barcode: number;
 }
 
 export default Product;
