@@ -8,11 +8,12 @@ export const createProduct = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const { name, brand } = req.body;
+  const { name, brand, barcode } = req.body;
   try {
     const result = await Product.create({
       name,
       brand,
+      barcode,
     });
     res.status(201).json({
       message: 'Record created successfully!',

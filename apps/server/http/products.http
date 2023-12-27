@@ -6,7 +6,7 @@ POST http://localhost:3333/products/create HTTP/1.1
 content-type: application/json
 
 {
-    "name": "phone",
+    "name": "phonae",
     "brand": "Samsung"
 }
 
@@ -15,9 +15,10 @@ content-type: application/json
 PUT http://localhost:3333/products HTTP/1.1
 content-type: application/json
 
-{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22",
-    "title": "How to use ssssss",
-    "description": "My first time query"
+{   "id":"5ed22e1a-1799-43b1-aa46-d99d65638f0a",
+    "name": "How to use s",
+    "brand": "Panachonik",
+    "barcode": "102026873499"
 }
 
 ###
@@ -25,6 +26,6 @@ content-type: application/json
 DELETE http://localhost:3333/products HTTP/1.1
 content-type: application/json
 
-{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22"
+{   "id":"63595a65-2cdb-4a01-ba59-1c157a65d640"
     
 }
