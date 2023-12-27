@@ -46,8 +46,10 @@ export default function RootLayout({
               </Toolbar>
             </Container>
           </AppBarStyled>
-
-          {children}
+          <Box component="main" sx={{ flexGrow: 1, p: 12, pt: 4 }}>
+            <Toolbar />
+            {children}
+          </Box>
         </Box>
       </ThemeRegistry>
     </html>

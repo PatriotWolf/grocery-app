@@ -45,8 +45,7 @@ const PageContainer: NextPage = () => {
     fetchProducts();
   }, [filter.page, filter.sort, filter.order]);
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 12, pt: 4 }}>
-      <Toolbar />
+    <>
       <Typography variant="h3">HOME</Typography>
       <Paper
         component="form"
@@ -156,7 +155,7 @@ const PageContainer: NextPage = () => {
           }}
         />
       )}
-    </Box>
+    </>
   );
 };
 
