@@ -1,4 +1,13 @@
+import {
+  Box,
+  Container,
+  CssBaseline,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import ThemeRegistry from '../ThemeRegistry';
 import './global.css';
+import AppBarStyled from './styles/AppBarSyled';
 
 export const metadata = {
   title: 'Welcome to web',
@@ -12,7 +21,35 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <ThemeRegistry>
+        <CssBaseline />
+        <Box component="body" sx={{ display: 'flex', height: '100vh' }}>
+          <AppBarStyled position="fixed">
+            <Container maxWidth="xl">
+              <Toolbar>
+                <Typography
+                  variant="h4"
+                  noWrap
+                  component="a"
+                  href="#app-bar-with-responsive-menu"
+                  sx={{
+                    display: { xs: 'none', md: 'flex' },
+
+                    fontWeight: 700,
+
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Massive Grocery
+                </Typography>
+              </Toolbar>
+            </Container>
+          </AppBarStyled>
+
+          {children}
+        </Box>
+      </ThemeRegistry>
     </html>
   );
 }
