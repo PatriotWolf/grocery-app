@@ -37,6 +37,7 @@ export const getAllProducts = async (
   next: NextFunction,
 ) => {
   const query = req.query.query;
+  const page = parseInt(req.query.page as string) || 1;
   const condition = query
     ? {
         [Op.or]: [
@@ -46,14 +47,26 @@ export const getAllProducts = async (
       }
     : null;
   try {
-    const result = await Product.findAll({
+    const offset = page * 20; // TODO: create constant for page limit
+    const limit = 20;
+    const { count, rows } = await Product.findAndCountAll({
       attributes: ['id', 'name', 'brand'],
       where: condition,
+      limit,
+      offset,
     });
+    const lastPage = Math.ceil(count / limit);
+    const nextPage = page + 1 > lastPage ? null : page + 1;
+    const prevPage = page - 1 < 1 ? null : page - 1;
     res.status(201).json({
-      message: 'Record created successfully!',
+      message: 'Record fetch successfully!',
       data: {
-        ...result,
+        products: rows,
+        count,
+        currentPage: page,
+        nextPage: nextPage,
+        prevPage: prevPage,
+        lastPage: lastPage,
       },
     });
   } catch (error) {
