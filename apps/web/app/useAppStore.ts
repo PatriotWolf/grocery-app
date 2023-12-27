@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 import {
   APIRemote,
@@ -41,8 +40,11 @@ const useAppStore = () => {
     setFilter(prev => ({ ...prev, page: 1 }));
     fetchProducts();
   };
-  const handleSelectChange = async (event: SelectChangeEvent) => {
-    setFilter(prev => ({ ...prev, sort: event.target.value as SortBy }));
+  const handleSortBy = async (
+    _event: React.MouseEvent<HTMLElement>,
+    sortBy: SortBy | null,
+  ) => {
+    setFilter(prev => ({ ...prev, sort: sortBy || SortBy.NAME }));
   };
   const handleSortOrder = (
     _event: React.MouseEvent<HTMLElement>,
@@ -82,7 +84,7 @@ const useAppStore = () => {
     handlePageChange,
     updateQueryString,
     onSearchClick,
-    handleSelectChange,
+    handleSortBy,
     handleSortOrder,
   };
 };

@@ -15,9 +15,6 @@ import {
   Paper,
   InputBase,
   Divider,
-  Select,
-  MenuItem,
-  InputLabel,
   ToggleButtonGroup,
   ToggleButton,
 } from '@mui/material';
@@ -36,7 +33,7 @@ const PageContainer: NextPage = () => {
     fetchProducts,
     updateQueryString,
     onSearchClick,
-    handleSelectChange,
+    handleSortBy,
     handleSortOrder,
   } = useAppStoreCtx();
 
@@ -76,24 +73,32 @@ const PageContainer: NextPage = () => {
           Search
         </Button>
       </Paper>
-      <Box my={2} textAlign={'right'}>
-        <InputLabel id="select-label">Sort By</InputLabel>
-        <Select
-          labelId="select-label"
-          id="select-label"
-          value={filter.name}
-          label="Age"
-          onChange={handleSelectChange}
-          sx={{
-            width: 100,
-          }}
+
+      <Paper
+        elevation={0}
+        sx={{
+          my: 2,
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          border: theme => `0px solid ${theme.palette.divider}`,
+          flexWrap: 'wrap',
+        }}
+      >
+        <Typography mr={1}>Sort By:</Typography>
+        <ToggleButtonGroup
+          value={filter.sort}
+          exclusive
+          onChange={handleSortBy}
+          aria-label="text alignment"
         >
           {Object.values(SortBy).map(val => (
-            <MenuItem value={val} key={'MenuItem' + val}>
+            <ToggleButton value={val} key={'MenuItem' + val}>
               {val.toLocaleUpperCase()}
-            </MenuItem>
+            </ToggleButton>
           ))}
-        </Select>
+        </ToggleButtonGroup>
+        <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
         <ToggleButtonGroup
           value={filter.order}
           exclusive
@@ -107,7 +112,8 @@ const PageContainer: NextPage = () => {
             <ArrowDropUp />
           </ToggleButton>
         </ToggleButtonGroup>
-      </Box>
+      </Paper>
+
       <Grid container spacing={4} mb={3}>
         {products.length > 0 &&
           products.map(product => {
