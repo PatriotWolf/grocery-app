@@ -6,7 +6,7 @@ export const seedDB = async () => {
       name: faker.commerce.productName(),
       brand: faker.company.name(),
       image: faker.image.urlLoremFlickr({
-        category: 'eletronic',
+        category: 'vegetable',
         height: 400,
         width: 400,
       }),
