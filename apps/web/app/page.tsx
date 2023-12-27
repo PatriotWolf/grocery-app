@@ -2,8 +2,6 @@
 import { useEffect } from 'react';
 import { NextPage } from 'next';
 import {
-  Box,
-  Toolbar,
   Typography,
   Card,
   CardMedia,
@@ -136,7 +134,11 @@ const PageContainer: NextPage = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button variant="contained" size="large">
+                    <Button
+                      variant="contained"
+                      size="large"
+                      href={'/' + product.id}
+                    >
                       Edit
                     </Button>
                   </CardActions>
