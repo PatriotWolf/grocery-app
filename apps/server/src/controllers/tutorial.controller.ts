@@ -82,7 +82,6 @@ export const editTutorials = async (
         returning: true,
       },
     );
-    console.log(result);
     res.status(200).json({
       message: 'Record created successfully!',
       data: { ...result[1][0] },
