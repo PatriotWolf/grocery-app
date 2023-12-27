@@ -1,18 +1,18 @@
 import { Op } from 'sequelize';
-import Tutorial from '../models/tutorial.model';
+import Product from '../models/product.model';
 import { NextFunction, Request, Response } from 'express';
 
 //Create
-export const createTutorial = async (
+export const createProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { title, description } = req.body;
+  const { name, brand } = req.body;
   try {
-    const result = await Tutorial.create({
-      title,
-      description,
+    const result = await Product.create({
+      name,
+      brand,
     });
     res.status(201).json({
       message: 'Record created successfully!',
@@ -30,7 +30,7 @@ export const createTutorial = async (
 };
 
 //Read
-export const getAllTutorials = async (
+export const getAllProducts = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -39,14 +39,14 @@ export const getAllTutorials = async (
   const condition = query
     ? {
         [Op.or]: [
-          { title: { [Op.iLike]: `%${query}%` } },
-          { description: { [Op.iLike]: `%${query}%` } },
+          { name: { [Op.iLike]: `%${query}%` } },
+          { brand: { [Op.iLike]: `%${query}%` } },
         ],
       }
     : null;
   try {
-    const result = await Tutorial.findAll({
-      attributes: ['id', 'title', 'description'],
+    const result = await Product.findAll({
+      attributes: ['id', 'name', 'brand'],
       where: condition,
     });
     res.status(201).json({
@@ -65,17 +65,18 @@ export const getAllTutorials = async (
 };
 
 //Update
-export const editTutorials = async (
+export const editProducts = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { id, title, description } = req.body;
+  const { id, name, brand, barcode } = req.body;
   try {
-    const result = await Tutorial.update(
+    const result = await Product.update(
       {
-        title,
-        description,
+        name,
+        brand,
+        barcode,
       },
       {
         where: { id },
@@ -96,14 +97,14 @@ export const editTutorials = async (
 };
 
 //Delete
-export const deleteTutorials = async (
+export const deleteProducts = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.body;
   try {
-    const result = await Tutorial.destroy({
+    const result = await Product.destroy({
       where: {
         id: id,
       },

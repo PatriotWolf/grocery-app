@@ -1,0 +1,30 @@
+GET http://localhost:3333/products/ HTTP/1.1
+
+###
+
+POST http://localhost:3333/products/create HTTP/1.1
+content-type: application/json
+
+{
+    "name": "phone",
+    "brand": "Samsung"
+}
+
+###
+
+PUT http://localhost:3333/products HTTP/1.1
+content-type: application/json
+
+{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22",
+    "title": "How to use ssssss",
+    "description": "My first time query"
+}
+
+###
+
+DELETE http://localhost:3333/products HTTP/1.1
+content-type: application/json
+
+{   "id":"56b5a7b8-4c19-4892-a17c-85f401645e22"
+    
+}
