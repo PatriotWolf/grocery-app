@@ -5,7 +5,11 @@ export const seedDB = async () => {
     return {
       name: faker.commerce.productName(),
       brand: faker.company.name(),
-      image: faker.image.avatarGitHub(),
+      image: faker.image.urlLoremFlickr({
+        category: 'eletronic',
+        height: 400,
+        width: 400,
+      }),
       barcode: Math.floor(Math.random() * 9000000000) + 100000000000,
     };
   };

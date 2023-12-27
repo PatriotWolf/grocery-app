@@ -58,7 +58,7 @@ export const getAllProducts = async (
     const offset = (page - 1) * 20; // TODO: create constant for page limit
     const limit = 20;
     const { count, rows } = await Product.findAndCountAll({
-      attributes: ['id', 'name', 'brand'],
+      attributes: ['id', 'name', 'brand', 'barcode', 'image'],
       order: sort ? [[sort, order || 'ASC']] : undefined,
       where: condition,
       limit,
