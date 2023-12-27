@@ -24,5 +24,10 @@ export interface ProductFilter {
 }
 
 export interface ProductRemote extends PageDetail {
-  data: Product[];
+  products: Product[];
+}
+
+export interface APIRemote<T> {
+  data: T;
+  message: string;
 }

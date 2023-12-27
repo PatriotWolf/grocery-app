@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { PageDetail, Product, ProductFilter, ProductRemote } from './types';
+import {
+  APIRemote,
+  PageDetail,
+  Product,
+  ProductFilter,
+  ProductRemote,
+} from './types';
 /**
  *
  * WHY NO REDUX: the reason not using redux yet as this is such a small project and no cross module data happening yet.
@@ -18,13 +24,15 @@ const useAppStore = () => {
   const fetchProducts = async () => {
     try {
       const url = 'http://localhost:3333/products';
-      const { data } = await axios.get<ProductRemote>(url, {
+      const { data } = await axios.get<APIRemote<ProductRemote>>(url, {
         params: {
           ...filter,
         },
       });
-      const { data: product, ...rest } = data;
-      setProducts(product);
+      console.log(data);
+      const { data: response } = data;
+      const { products, ...rest } = response;
+      setProducts(response.products);
       setPageData(rest);
     } catch (error) {
       console.log(error);

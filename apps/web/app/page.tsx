@@ -15,7 +15,7 @@ const PageContainer: NextPage = () => {
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Toolbar />
       <Typography variant="h3">HOME</Typography>
-      {products.length}
+      {JSON.stringify(products)}
     </Box>
   );
 };
