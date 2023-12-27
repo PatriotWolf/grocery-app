@@ -34,6 +34,11 @@ class Product extends Model<Product> {
     defaultValue: Math.floor(Math.random() * 9000000000) + 100000000000,
   })
   declare barcode: number;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  declare image: string;
 }
 
 export default Product;

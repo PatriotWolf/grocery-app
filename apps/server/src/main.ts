@@ -7,6 +7,8 @@ import express, { Express } from 'express';
 import * as path from 'path';
 import db from './database';
 import MainRoute from './routes';
+import Product from './models/product.model';
+import { seedDB } from './seed';
 
 const app: Express = express();
 
@@ -15,7 +17,12 @@ const initApp = async () => {
 
   // Test the connection.
   try {
-    await db.sync();
+    await db.sync({ force: true });
+
+    await Product.bulkCreate(await seedDB(), {
+      individualHooks: true,
+      returning: true,
+    });
     console.log('Connection has been established successfully.');
 
     app.use(express.json());
