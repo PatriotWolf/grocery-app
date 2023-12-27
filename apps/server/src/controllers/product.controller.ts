@@ -38,6 +38,14 @@ export const getAllProducts = async (
 ) => {
   const query = req.query.query;
   const page = parseInt(req.query.page as string) || 1;
+  const sort =
+    req.query.sort === 'name' || req.query.sort === 'brand'
+      ? req.query.sort
+      : null;
+  const order =
+    req.query.order === 'ASC' || req.query.order === 'ASC'
+      ? req.query.order
+      : null;
   const condition = query
     ? {
         [Op.or]: [
@@ -47,10 +55,11 @@ export const getAllProducts = async (
       }
     : null;
   try {
-    const offset = page * 20; // TODO: create constant for page limit
+    const offset = (page - 1) * 20; // TODO: create constant for page limit
     const limit = 20;
     const { count, rows } = await Product.findAndCountAll({
       attributes: ['id', 'name', 'brand'],
+      order: sort ? [[sort, order || 'ASC']] : undefined,
       where: condition,
       limit,
       offset,
