@@ -11,11 +11,12 @@ import {
   Alert,
 } from '@mui/material';
 
-import { Formik, FormikProps, Field, FieldProps } from 'formik';
+import { Formik, FormikProps, Field, FieldProps, getIn } from 'formik';
 
 import useProductStore from './useProductStore';
 import { Product } from '../types';
-import { editSchedulingSchema } from './constans';
+import { editSchedulingSchema, formList } from './constans';
+import { FormEntry } from './types';
 interface Props {
   params: { id: string };
 }
@@ -31,7 +32,7 @@ const Page = ({ params: { id } }: Props) => {
   const { product, loading, error, fetchProduct, updateProduct } =
     useProductStore();
 
-  const notify = () => {
+  const openNotification = () => {
     toggleIsNotify(true);
   };
 
@@ -77,69 +78,37 @@ const Page = ({ params: { id } }: Props) => {
                     message: 'Error on save!',
                   });
                 }
-                notify();
+                openNotification();
               });
             }}
             enableReinitialize
           >
-            {({
-              values,
-              errors,
-              touched,
-              submitForm,
-            }: FormikProps<Product>) => (
+            {({ errors, touched, submitForm }: FormikProps<Product>) => (
               <>
-                <Field name="name">
-                  {({ field }: FieldProps<string, Product>) => (
-                    <Box mb={3}>
-                      <TextField
-                        fullWidth
-                        id="name"
-                        name="name"
-                        label="Name"
-                        value={values.name}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={touched.name && Boolean(errors.name)}
-                        helperText={touched.name && errors.name}
-                      />
-                    </Box>
-                  )}
-                </Field>
-                <Field name="brand">
-                  {({ field }: FieldProps<string, Product>) => (
-                    <Box mb={3}>
-                      <TextField
-                        fullWidth
-                        id="brand"
-                        name="brand"
-                        label="Brand"
-                        value={values.brand}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={touched.brand && Boolean(errors.brand)}
-                        helperText={touched.brand && errors.brand}
-                      />
-                    </Box>
-                  )}
-                </Field>
-                <Field name="barcode">
-                  {({ field }: FieldProps<string, Product>) => (
-                    <Box mb={3}>
-                      <TextField
-                        fullWidth
-                        id="barcode"
-                        name="barcode"
-                        label="Barcode"
-                        value={values.barcode}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
-                        error={touched.barcode && Boolean(errors.barcode)}
-                        helperText={touched.barcode && errors.barcode}
-                      />
-                    </Box>
-                  )}
-                </Field>
+                {formList.map(({ label, name }: FormEntry) => (
+                  <Field name={name} key={'input' + label}>
+                    {({ field }: FieldProps<string, Product>) => (
+                      <Box mb={3}>
+                        <TextField
+                          fullWidth
+                          id={name}
+                          name={name}
+                          label={label}
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={
+                            getIn(touched, name) && Boolean(getIn(errors, name))
+                          }
+                          helperText={
+                            getIn(touched, name) && getIn(errors, name)
+                          }
+                        />
+                      </Box>
+                    )}
+                  </Field>
+                ))}
+
                 <Button type="submit" onClick={submitForm}>
                   Save
                 </Button>
