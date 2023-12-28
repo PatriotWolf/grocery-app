@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { APIRemote, Product } from '../types';
 import axios from 'axios';
+import { NotificationType } from './types';
 
 const useProductStore = () => {
   const [product, setProducts] = useState<Product>({
@@ -12,7 +13,26 @@ const useProductStore = () => {
   });
   const [error, setError] = useState<string | undefined>(undefined);
   const [loading, isLoading] = useState<boolean>(true);
+  const [isNotify, toggleIsNotify] = useState<boolean>(false);
+  const [notifyData, setNotifyData] = useState<NotificationType>({
+    message: '',
+    severity: 'success',
+  });
 
+  const openNotification = () => {
+    toggleIsNotify(true);
+  };
+
+  const handleClose = (
+    _event: React.SyntheticEvent | Event,
+    reason?: string,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    toggleIsNotify(false);
+  };
   const fetchProduct = async (id: string) => {
     try {
       const url = 'http://localhost:3333/products/' + id;
@@ -27,21 +47,36 @@ const useProductStore = () => {
     }
   };
 
-  const updateProduct = async (
-    product: Product,
-    callback: (success: boolean) => void,
-  ) => {
+  const updateProduct = async (product: Product) => {
     try {
       const url = 'http://localhost:3333/products';
       const { data } = await axios.put<APIRemote<Product>>(url, { ...product });
-      data.data && callback(true);
+      data.data &&
+        setNotifyData({
+          severity: 'success',
+          message: 'Saved!',
+        });
     } catch (error) {
-      callback(false);
+      setNotifyData({
+        severity: 'warning',
+        message: 'Error on save!',
+      });
 
       console.log(error);
     }
+    openNotification();
   };
-  return { product, loading, error, fetchProduct, updateProduct };
+  return {
+    product,
+    loading,
+    error,
+    isNotify,
+    notifyData,
+    openNotification,
+    handleClose,
+    fetchProduct,
+    updateProduct,
+  };
 };
 
 export default useProductStore;
